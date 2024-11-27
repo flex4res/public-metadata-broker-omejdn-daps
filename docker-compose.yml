@@ -1,0 +1,126 @@
+version: '3'
+services:
+  # Metadata Broker Services
+  broker-reverseproxy:
+    build: ./broker/proxy
+    volumes:
+      - ./broker/cert:/etc/cert/
+    privileged: true
+    ports:
+      - "4443:443" # IDS-HTTP API
+      - "801:80"
+
+  broker-core:
+    image: registry.gitlab.cc-asp.fraunhofer.de/eis-ids/broker-open/core:5.0.0
+    volumes:
+      - ./broker/cert:/etc/cert/
+      - ./broker/application.properties:/app/config/application.properties
+    restart: always
+    environment:
+      - SPARQL_ENDPOINT=http://broker-fuseki:3030/connectorData
+      - SPARQL_URL=http://broker-fuseki:3030/connectorData
+      - ELASTICSEARCH_HOSTNAME=broker-elasticsearch
+      - SHACL_VALIDATION=true
+      - DAPS_VALIDATE_INCOMING=false
+      - IDENTITY_JAVAKEYSTORE=/etc/cert/isstbroker-keystore.jks
+      - COMPONENT_URI=https://localhost/
+      - COMPONENT_CATALOGURI=https://localhost/connectors/
+      - JWKS_TRUSTEDHOSTS=omejdn,localhost,host.docker.internal
+      - DAPS_URL=http://localhost:443/v2/token
+    #      - JAVA_OPTS=-Dspring.config.location=file:/app/config/application.properties
+    expose:
+      - "8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  broker-fuseki:
+    image: registry.gitlab.cc-asp.fraunhofer.de/eis-ids/broker-open/fuseki
+    environment:
+      - ADMIN_PASSWORD=12345
+    volumes:
+      - broker-fuseki:/fuseki
+    ports:
+      - "3030:3030"
+
+  broker-elasticsearch:
+    image: elasticsearch:7.16.2
+    environment:
+      - http.port=9200
+      - "http.cors.allow-origin=http://localhost:802/"
+      - "http.cors.enabled=true"
+      - "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization"
+      - "http.cors.allow-credentials=true"
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    volumes:
+      - broker-esdata:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - ./broker/db:/data/db
+    ports:
+      - "27017:27017"
+
+  mongodb-handler:
+    image: registry.gitlab.cc-asp.fraunhofer.de/eis-ids/broker/mongodb-handler
+    ports:
+      - "4000:4000"
+    environment:
+      - MONGODB_ENDPOINT=mongodb://mongodb:27017/users
+      - JWT_SECRET=supersecretkey
+      - ADMIN_PASSWORD=admin
+      - BROKER_URL=http://broker-core:8080
+
+  searchfrontend:
+    build: ./broker/searchfrontend
+    ports:
+      - "802:802"
+
+  # Omejdn-DAPS Services
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    privileged: true
+    environment:
+      - OMEJDN_DOMAIN=_
+      - OMEJDN_PATH=/auth
+      - UI_PATH=
+    volumes:
+      - ./omejdn-daps/nginx.development.conf:/etc/nginx/templates/default.conf.template
+      - ./omejdn-daps/omejdn-cert/server.crt:/etc/nginx/omejdn.cert
+      - ./omejdn-daps/omejdn-cert/server.key:/etc/nginx/omejdn.key
+
+  omejdn-server:
+    image: ghcr.io/fraunhofer-aisec/omejdn-server:1.7.1
+    restart: unless-stopped
+    environment:
+      - OMEJDN_ISSUER=https://localhost/auth
+      - OMEJDN_FRONT_URL=https://localhost/auth
+      - OMEJDN_OPENID=true
+      - OMEJDN_ENVIRONMENT=development
+      - OMEJDN_ACCEPT_AUDIENCE=idsc:IDS_CONNECTORS_ALL
+      - OMEJDN_DEFAULT_AUDIENCE=idsc:IDS_CONNECTORS_ALL
+      - OMEJDN_ADMIN=INTRA:FLEX4RES
+    volumes:
+      - ./omejdn-daps/config:/opt/config
+      - ./omejdn-daps/keys:/opt/keys
+    ports:
+      - "4567:4567"
+
+  omejdn-ui:
+    image: ghcr.io/fraunhofer-aisec/omejdn-ui:dev
+    restart: unless-stopped
+    environment:
+      - OIDC_ISSUER=https://localhost/auth
+      - API_URL=https://localhost/auth/api/v1
+      - CLIENT_ID=adminUI
+
+volumes:
+  broker-fuseki:
+  broker-esdata:

@@ -1,0 +1,18 @@
+- client_id: 34:20:0F:69:66:79:A3:BB:9E:AB:7D:57:24:1E:3B:A3:4B:B8:46:2A:34:20:0F:69:66:79:A3:BB:9E:AB:7D:57:24:1E:3B:A3:4B:B8:46:2A
+  client_name: broker
+  grant_types: client_credentials
+  token_endpoint_auth_method: private_key_jwt
+  scope: idsc:IDS_CONNECTOR_ATTRIBUTES_ALL
+  attributes:
+  - key: idsc
+    value: IDS_CONNECTOR_ATTRIBUTES_ALL
+  - key: securityProfile
+    value: idsc:BASE_SECURITY_PROFILE
+  - key: referringConnector
+    value: http://broker.demo
+  - key: "@type"
+    value: ids:DatPayload
+  - key: "@context"
+    value: https://w3id.org/idsa/contexts/context.jsonld
+  - key: transportCertsSha256
+    value: 391273c2c98c03cb37637b8e38fa6187276309564f1a8a40e093c01e419ad031

@@ -1,0 +1,167 @@
+{
+    "@context" : {
+      "ids" : "https://w3id.org/idsa/core/",
+      "idsc" : "https://w3id.org/idsa/code/"
+    },
+    "@type" : "ids:BaseConnector",
+    "@id" : "https://bab.hessen.connector.de.dg",
+    "ids:description" : [ {
+      "@value" : "BAB Daten für das Bundesland Hessen",
+      "@language" : "en"
+    } ],
+    "ids:title" : [ {
+      "@value" : "BAB Daten Hessen",
+      "@language" : "en"
+    } ],
+    "ids:outboundModelVersion" : "4.0.0",
+    "ids:inboundModelVersion" : [ "4.0.0" ],
+    "ids:maintainer" : {
+      "@id" : "http://iais.fraunhofer.de"
+    },
+    "ids:curator" : {
+      "@id" : "http://fit.fraunhofer.de"
+    },
+    "ids:securityProfile" : {
+      "@id" : "idsc:BASE_SECURITY_PROFILE"
+    },
+     "ids:hasDefaultEndpoint" : {
+      "@type" : "ids:ConnectorEndpoint",
+      "@id" : "https://w3id.org/idsa/autogen/connectorEndpoint/e5e2ab04-633a-44b9-87d9-a097ae6da3cf",
+      "ids:accessURL" : {
+        "@id" : "https://localhost:8080/api/ids/data"
+      }
+    },
+    "ids:resourceCatalog" : [ {
+      "@type" : "ids:ResourceCatalog",
+      "@id" : "https://w3id.org/idsa/autogen/resourceCatalog/25b17335-f8f1-452b-aeee-2db4f2691e75",
+      "ids:offeredResource" : [ {
+        "@type" : "ids:Resource",
+        "@id" : "http://w3id.org/mobids/resource/20100062)",
+        "ids:language" : [ {
+          "@id" : "idsc:DE"
+        } ],
+        "ids:version" : "v0.0.1",
+        "ids:description" : [ {
+          "@value" : "Die Daten umfassen Informationen über geplante und aktuelle Arbeitsstellen längerer Dauer (Dauerbaustellen) auf Bundesautobahnen in Hessen mit Angaben bzgl. - Zeitraum der Baumaßnahme - Art der Baumaßnahme - betroffene Abschnitte - Verkehrsführung Die Daten werden mindestens einmal täglich aktualisiert. Die Verortung erfolgt i.d.R. über ALERT-C Linear (mit Offset). Für die Auswertung der letztgenannten Methode ist die sog. Location Code Liste notwendig, die von der BASt gepflegt und verfügbar gemacht wird",
+          "@type" : "http://www.w3.org/2001/XMLSchema#string"
+        } ],
+        "ids:title" : [ {
+          "@value" : "Arbeitsstellen laengerer Dauer auf BAB in Hessen",
+          "@type" : "http://www.w3.org/2001/XMLSchema#string"
+        } ],
+        "ids:keyword" : [ {
+          "@value" : "Mobility Data Space",
+          "@type" : "http://www.w3.org/2001/XMLSchema#string"
+        }, {
+          "@value" : "Baustellen",
+          "@type" : "http://www.w3.org/2001/XMLSchema#string"
+        } ],
+        "ids:publisher" : {
+          "@id" : "http://www.bast.de/baustelleninfo"
+        },
+        "ids:sovereign" : {
+          "@id" : "http://www.bast.de/baustelleninfo"
+        },
+        "ids:representation" : [ {
+          "@type" : "ids:Representation",
+          "@id" : "https://w3id.org/idsa/autogen/representation/5c24b645-a8d7-406d-a300-a67fab90f796",
+          "ids:instance" : [ {
+            "@type" : "ids:Artifact",
+            "@id" : "https://w3id.org/idsa/autogen/artifact/c8f223be-390a-4407-baf2-df6858c4d70b",
+            "ids:fileName" : "Arbeitsstellen_Laengerer_dauer.xml",
+            "ids:creationDate" : {
+              "@value" : "2021-03-17T13:07:35.913+01:00",
+              "@type" : "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+            },
+            "ids:byteSize" : 3123818
+          } ],
+          "ids:modified" : {
+            "@value" : "2021-03-17T13:07:36.292+01:00",
+            "@type" : "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+          },
+          "ids:mediaType" : {
+            "@type" : "ids:IANAMediaType",
+            "@id" : "https://w3id.org/idsa/autogen/iANAMediaType/1e132057-1320-41b4-bee1-a615a7dd5f49",
+            "ids:filenameExtension" : ".xml"
+          }
+        } ],
+        "ids:spatialCoverage" : [ {
+          "@type" : "ids:GeoFeature",
+          "@id" : "https://www.geonames.org/6290252/"
+        } ],
+        "ids:contractOffer" : [ {
+          "@type" : "ids:ContractOffer",
+          "@id" : "https://w3id.org/idsa/autogen/contractOffer/7a6bf890-c602-4bff-84a7-8ac83c102d20",
+          "ids:permission" : [ {
+            "@type" : "ids:Permission",
+            "@id" : "https://w3id.org/idsa/autogen/permission/c2599d61-9803-4b03-b4ff-26e338753e3a",
+            "ids:action" : [ {
+              "@id" : "idsc:USE"
+            }, {
+              "@id" : "idsc:READ"
+            } ],
+            "ids:assigner" : [ {
+              "@id" : "http://www.bast.de/"
+            } ],
+            "ids:constraint" : [ {
+              "@type" : "ids:Constraint",
+              "@id" : "https://w3id.org/idsa/autogen/constraint/44222d63-6ccf-4c47-ac90-0433fd7ccd72",
+              "ids:operator" : {
+                "@id" : "idsc:INSIDE"
+              },
+              "ids:rightOperand" : {
+                "@value" : "European Union"
+              },
+              "ids:leftOperand" : {
+                "@id" : "idsc:ABSOLUTE_SPATIAL_POSITION"
+              }
+            } ]
+          } ],
+          "ids:provider" : {
+            "@id" : "http://www.bast.de/"
+          },
+          "ids:contractDocument" : {
+            "@type" : "ids:TextResource",
+            "@id" : "https://service.mdm-portal.de/mdm-portal-application/publDetail.do?publicationId=2010006&backDest=rechercheResult"
+          },
+          "ids:contractStart" : {
+            "@value" : "2021-03-17T13:07:36.384+01:00",
+            "@type" : "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+          },
+          "ids:prohibition" : [ {
+            "@type" : "ids:Prohibition",
+            "@id" : "https://w3id.org/idsa/autogen/prohibition/d3fbfbe8-4757-403c-8339-0bb82d6cd1cd",
+            "ids:action" : [ {
+              "@id" : "idsc:DISTRIBUTE"
+            }, {
+              "@id" : "idsc:MODIFY"
+            } ]
+          } ]
+        } ],
+        "ids:resourceEndpoint" : [ {
+          "@type" : "ids:ConnectorEndpoint",
+          "@id" : "https://w3id.org/idsa/autogen/connectorEndpoint/fd39da66-2990-4c2d-ad03-2d970eed24ba",
+          "ids:endpointArtifact" : {
+            "@type" : "ids:Artifact",
+            "@id" : "https://w3id.org/idsa/autogen/artifact/c8f223be-390a-4407-baf2-df6858c4d70b",
+            "ids:fileName" : "Arbeitsstellen_Laengerer_dauer.xml",
+            "ids:creationDate" : {
+              "@value" : "2021-03-17T13:07:35.913+01:00",
+              "@type" : "http://www.w3.org/2001/XMLSchema#dateTimeStamp"
+            },
+            "ids:byteSize" : 3123818
+          },
+          "ids:accessURL" : {
+            "@id" : "https://service.mdm-portal.de/mdm-portal-application/publDetail.do?publicationId=2010006&backDest=rechercheResult"
+          }
+        } ],
+        "https://w3id.org/mobids/roadNetworkCoverage" : [ "Autobahnen" ],
+        "https://w3id.org/mobids/mdmBrokering" : [ true ],
+        "https://w3id.org/mobids/geoReferenceMethod" : [ "sonstige" ],
+        "https://w3id.org/mobids/transportMode" : [ "Lkw", "Pkw" ],
+        "https://w3id.org/mobids/DataCategory" : [ "Baustelleninformationen" ],
+        "https://w3id.org/mobids/DataCategoryDetail" : [ "Langzeit-Baustellen" ],
+        "https://w3id.org/mobids/nutsLocation" : [ "DE7" ]
+      } ]
+    } ]
+  }
