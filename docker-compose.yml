@@ -14,7 +14,7 @@ services:
     image: registry.gitlab.cc-asp.fraunhofer.de/eis-ids/broker-open/core:5.0.0
     volumes:
       - ./broker/cert:/etc/cert/
-      - ./broker/application.properties:/app/config/application.properties
+#      - ./broker/application.properties:/app/config/application.properties
     restart: always
     environment:
       - SPARQL_ENDPOINT=http://broker-fuseki:3030/connectorData
@@ -23,8 +23,8 @@ services:
       - SHACL_VALIDATION=true
       - DAPS_VALIDATE_INCOMING=false
       - IDENTITY_JAVAKEYSTORE=/etc/cert/isstbroker-keystore.jks
-      - COMPONENT_URI=https://localhost/
-      - COMPONENT_CATALOGURI=https://localhost/connectors/
+      - COMPONENT_URI=https://localhost:443/
+      - COMPONENT_CATALOGURI=https://localhost:443/connectors/
       - JWKS_TRUSTEDHOSTS=omejdn,localhost,host.docker.internal
       - DAPS_URL=http://localhost:443/v2/token
     #      - JAVA_OPTS=-Dspring.config.location=file:/app/config/application.properties
