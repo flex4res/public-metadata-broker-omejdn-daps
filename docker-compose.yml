@@ -14,7 +14,7 @@ services:
     image: registry.gitlab.cc-asp.fraunhofer.de/eis-ids/broker-open/core:5.0.0
     volumes:
       - ./broker/cert:/etc/cert/
-#      - ./broker/application.properties:/app/config/application.properties
+      - ./broker/application.properties:/app/config/application.properties
     restart: always
     environment:
       - SPARQL_ENDPOINT=http://broker-fuseki:3030/connectorData
@@ -23,8 +23,11 @@ services:
       - SHACL_VALIDATION=true
       - DAPS_VALIDATE_INCOMING=false
       - IDENTITY_JAVAKEYSTORE=/etc/cert/isstbroker-keystore.jks
-      - COMPONENT_URI=https://localhost:443/
-      - COMPONENT_CATALOGURI=https://localhost:443/connectors/
+      - COMPONENT_URI=https://localhost:4443/
+      - COMPONENT_CATALOGURI=https://localhost:4443/connectors/
+      - COMPONENT_MAINTAINER=https://localhost/
+      - COMPONENT_RESPONSESENDER=https://localhost/
+      - COMPONENT_RESPONSESENDERAGENT=https://localhost/
       - JWKS_TRUSTEDHOSTS=omejdn,localhost,host.docker.internal
       - DAPS_URL=http://localhost:443/v2/token
     #      - JAVA_OPTS=-Dspring.config.location=file:/app/config/application.properties
@@ -36,7 +39,7 @@ services:
   broker-fuseki:
     image: registry.gitlab.cc-asp.fraunhofer.de/eis-ids/broker-open/fuseki
     environment:
-      - ADMIN_PASSWORD=12345
+      - ADMIN_PASSWORD=ioj@gje5!j4eov4f90f#430jf
     volumes:
       - broker-fuseki:/fuseki
     ports:
@@ -46,7 +49,7 @@ services:
     image: elasticsearch:7.16.2
     environment:
       - http.port=9200
-      - "http.cors.allow-origin=http://localhost:802/"
+      - "http.cors.allow-origin=http://78.47.45.213:802"
       - "http.cors.enabled=true"
       - "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization"
       - "http.cors.allow-credentials=true"
@@ -70,7 +73,7 @@ services:
       - "4000:4000"
     environment:
       - MONGODB_ENDPOINT=mongodb://mongodb:27017/users
-      - JWT_SECRET=supersecretkey
+      - JWT_SECRET=somethingsecret
       - ADMIN_PASSWORD=admin
       - BROKER_URL=http://broker-core:8080
 
@@ -100,8 +103,8 @@ services:
     image: ghcr.io/fraunhofer-aisec/omejdn-server:1.7.1
     restart: unless-stopped
     environment:
-      - OMEJDN_ISSUER=https://localhost/auth
-      - OMEJDN_FRONT_URL=https://localhost/auth
+      - OMEJDN_ISSUER=https://localhost:443/auth
+      - OMEJDN_FRONT_URL=https://localhost:443/auth
       - OMEJDN_OPENID=true
       - OMEJDN_ENVIRONMENT=development
       - OMEJDN_ACCEPT_AUDIENCE=idsc:IDS_CONNECTORS_ALL
@@ -117,8 +120,8 @@ services:
     image: ghcr.io/fraunhofer-aisec/omejdn-ui:dev
     restart: unless-stopped
     environment:
-      - OIDC_ISSUER=https://localhost/auth
-      - API_URL=https://localhost/auth/api/v1
+      - OIDC_ISSUER=https://localhost:443/auth
+      - API_URL=https://localhost:443/auth/api/v1
       - CLIENT_ID=adminUI
 
 volumes:
